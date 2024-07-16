@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const carSchema = new mongoose.Schema({
-  Model: {
+  model: {
     type: String,
     required: [true, "Please provide model name."],
     minLength: [3, "Title must contain at least 3 Characters!"],
@@ -47,6 +47,6 @@ const carSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-});
+},{timestamps: true});
 
 export const Car = mongoose.model("Car", carSchema);

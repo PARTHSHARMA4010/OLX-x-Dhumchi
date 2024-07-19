@@ -4,7 +4,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
 import userRouter from './routes/userRouter.js' 
-import applicationRouter from './routes/applicationRouter.js' 
+import requestRouter from './routes/requestRouter.js' 
 import sellerRouter from './routes/sellerRouter.js' 
 import { dbconnnect } from './database/dbconnect.js';
 import { errorMiddleware } from './middlewares/error.js';
@@ -32,7 +32,7 @@ app.use(fileUpload({
 }))
 
 app.use("/api/user", userRouter)
-app.use("/api/applicationRouter", applicationRouter)
+app.use("/api/requestRouter", requestRouter)
 app.use("/api/sellerRouter", sellerRouter)
 
 dbconnnect()

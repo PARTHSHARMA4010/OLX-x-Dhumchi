@@ -47,6 +47,19 @@ const carSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+
+  photo: {
+    public_id :{
+      type: String,
+      required: true
+    },
+
+    url:{
+      type: String,
+      required: true
+    }
+  }
+  
 },{timestamps: true});
 
 export const Car = mongoose.model("Car", carSchema);

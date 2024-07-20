@@ -16,6 +16,16 @@ const requestSchema = new mongoose.Schema({
         required: [true, "Please enter your location"]
     },
 
+    price:{
+        type: Number,
+        required: [true, "Please provide your price"]
+    },
+
+    remark:{
+        type: String,
+        required: [true, "Please provide your remark"]
+    },
+
     buyer_id:{
         user:{
             type: mongoose.Schema.Types.ObjectId,

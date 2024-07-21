@@ -18,6 +18,34 @@ export const sellCar = catchasyncError(async (req, res, next) => {
       new ErrorHandler("You are Buyer.", 400)
     );
   }
+
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return next(new ErrorHandler("Resume File Required!", 400));
+  }
+
+  const { photo } = req.files;
+  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+  if (!allowedFormats.includes(photo.mimetype)) {
+    return next(
+      new ErrorHandler("Invalid file type. Please upload a PNG file.", 400)
+    );
+  }
+  const cloudinaryResponse = await cloudinary.uploader.upload(
+    photo.tempFilePath
+  );
+
+  if (!cloudinaryResponse || cloudinaryResponse.error) {
+    console.error(
+      "Cloudinary Error:",
+      cloudinaryResponse.error || "Unknown Cloudinary error"
+    );
+    return next(new ErrorHandler("Failed to upload photo to Cloudinary", 500));
+  }
+
+
+
+
   const {
     model,
     description,
@@ -29,7 +57,7 @@ export const sellCar = catchasyncError(async (req, res, next) => {
     upto,
   } = req.body;
 
-  if (!model || !description || !fuel || !state || !city ) {
+  if (!model || !description || !fuel || !state || !city || !photo) {
     return next(new ErrorHandler("Please provide full details.", 400));
   }
 
@@ -58,6 +86,10 @@ export const sellCar = catchasyncError(async (req, res, next) => {
     startfrom,
     upto,
     postedBy,
+    photo: {
+      public_id: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.secure_url,
+    },
   });
   res.status(200).json({
     success: true,
